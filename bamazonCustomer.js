@@ -16,20 +16,34 @@ connection.connect(function(err) {
   if (err) throw err;
 });
 
- connection.query("SELECT * FROM products", function(err, results) {
-   console.log(results);
-   inquirer.prompt([
-     {
-       name:'id',
-       type:'input',
-       message:'What is the id of the product you would like to buy?'
-     },
-     {
-       name:'quantity',
-       type:'input',
-       message:'How many would you like to buy'
-     }
-   ]).then(function(answer) {
+ connection.query("SELECT * FROM products", function(err, result) {
+   console.log(result);
+   buyProducts();
 
-   })
  });
+
+function buyProducts() {
+  connection.query("Select * from products", function(err, results) {
+    if (err) throw err;
+    inquirer.prompt([
+      {
+        name:'id',
+        type:'input',
+        message:'What is the id of the product you would like to buy?'
+      },
+      {
+        name:'quantity',
+        type:'input',
+        message:'How many would you like to buy'
+      }
+    ]).then(function(answer) {
+      console.log(':|');
+      for (let i = 0; i < results.length; i++) {
+        if (results[i].product_ID === parseInt(answer.id)) {
+          console.log(':)')
+        }
+      }
+    });
+
+  })
+}
