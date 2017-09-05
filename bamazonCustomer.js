@@ -18,4 +18,18 @@ connection.connect(function(err) {
 
  connection.query("SELECT * FROM products", function(err, results) {
    console.log(results);
+   inquirer.prompt([
+     {
+       name:'id',
+       type:'input',
+       message:'What is the id of the product you would like to buy?'
+     },
+     {
+       name:'quantity',
+       type:'input',
+       message:'How many would you like to buy'
+     }
+   ]).then(function(answer) {
+
+   })
  });
