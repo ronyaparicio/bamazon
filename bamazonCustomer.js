@@ -14,10 +14,8 @@ var connection = mysql.createConnection({
 // connect to the mysql server and sql database
 connection.connect(function(err) {
   if (err) throw err;
-  // run the start function after the connection is made to prompt the user
-  start();
 });
 
-function start() {
-   connection.query("SELECT * FROM auctions", function(err, results) {};
-}
+ connection.query("SELECT * FROM products", function(err, results) {
+   console.log(results);
+ });
