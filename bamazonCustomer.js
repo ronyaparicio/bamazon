@@ -1,6 +1,5 @@
-var mysql = require("mysql");
-var inquirer = require("inquirer");
-
+const mysql = require("mysql");
+const inquirer = require("inquirer");
 // create the connection information for the sql database
 var connection = mysql.createConnection({
   host: "localhost",
@@ -16,15 +15,13 @@ connection.connect(function(err) {
   if (err) throw err;
 });
 
- connection.query("SELECT * FROM products", function(err, result) {
-   console.log(result);
-   buyProducts();
-
- });
+buyProducts();
 
 function buyProducts() {
+
   connection.query("Select * from products", function(err, results) {
     if (err) throw err;
+    console.log(results);
     inquirer.prompt([
       {
         name:'id',
@@ -37,13 +34,31 @@ function buyProducts() {
         message:'How many would you like to buy'
       }
     ]).then(function(answer) {
-      console.log(':|');
       for (let i = 0; i < results.length; i++) {
         if (results[i].product_ID === parseInt(answer.id)) {
-          console.log(':)')
+          let newQuantity = results[i].quantity - parseInt(answer.quantity);
+          let aQuantity = parseInt(answer.quantity);
+          if (results[i].quantity >= parseInt(answer.quantity)) {
+            console.log(newQuantity);
+            connection.query(
+              "UPDATE products SET ? WHERE ?",
+              [
+                {
+                  quantity: newQuantity
+
+                },{
+                  product_ID: aQuantity
+                }
+              ],
+              function(err) {
+                if (err) throw err;
+              console.log("Your purchase was successfull!");
+              buyProducts();
+              }
+            );
+          }
         }
       }
     });
-
   })
 }
