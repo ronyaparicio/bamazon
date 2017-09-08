@@ -11,10 +11,6 @@ var connection = mysql.createConnection({
   database: "bamazon"
 });
 // connect to the mysql server and sql database
-connection.connect(function(err) {
-  if (err) throw err;
-});
-
 buyProducts();
 
 function buyProducts() {
@@ -37,7 +33,7 @@ function buyProducts() {
       for (let i = 0; i < results.length; i++) {
         if (results[i].product_ID === parseInt(answer.id)) {
           let newQuantity = results[i].quantity - parseInt(answer.quantity);
-          let aQuantity = parseInt(answer.quantity);
+          let aID = parseInt(answer.id);
           if (results[i].quantity >= parseInt(answer.quantity)) {
             console.log(newQuantity);
             connection.query(
@@ -47,7 +43,7 @@ function buyProducts() {
                   quantity: newQuantity
 
                 },{
-                  product_ID: aQuantity
+                  product_ID: aID
                 }
               ],
               function(err) {
